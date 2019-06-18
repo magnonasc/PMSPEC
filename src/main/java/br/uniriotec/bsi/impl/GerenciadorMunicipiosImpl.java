@@ -42,7 +42,7 @@ public class GerenciadorMunicipiosImpl implements GerenciadorMunicipios {
     }
 
     @Override
-    public Optional<Municipio> buscarMunicipio(long geocodigo) {
+    public Optional<Municipio> buscarMunicipio(final long geocodigo) {
         return municipios.stream().filter(municipio -> municipio.getGeocodigo() == geocodigo).findFirst();
     }
 
