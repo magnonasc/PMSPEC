@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+    <Folder>
+        <Placemark>
+            <name>Alta Floresta D&apos;Oeste</name>
+            <ExtendedData>
+                <SchemaData schemaUrl="#55mu2500gsr">
+                    <SimpleData name="GEOCODIGO_MUNICIPIO">1234567</SimpleData>
+                    <SimpleData name="SIGLA">AA</SimpleData>
+                    <SimpleData name="NOME_MUNICIPIO">Município de Teste Simples</SimpleData>
+                </SchemaData>
+            </ExtendedData>
+            <Polygon>
+                <outerBoundaryIs>
+                    <LinearRing>
+                        <coordinates>
+                            -62.18254881082289,-11.86729196449489,0 -62.16275528088946,-11.8718313187172,0 -62.15752323637058,-11.87084789249371,0 -62.18254881082289,-11.86729196449489,0
+                        </coordinates>
+                    </LinearRing>
+                </outerBoundaryIs>
+            </Polygon>
+        </Placemark>
+    </Folder>
+</kml>

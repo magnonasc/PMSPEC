@@ -1,5 +1,6 @@
 package br.uniriotec.bsi.model;
 
+import javax.annotation.Nullable;
 import java.util.Comparator;
 
 /**
@@ -41,4 +42,29 @@ public class Coordenada {
         return longitude;
     }
 
+    @Override
+    public boolean equals(@Nullable final Object object) {
+        if (this == object) {
+            return true;
+        }
+
+        if (object instanceof Coordenada) {
+            Coordenada outraCoordenada = (Coordenada) object;
+
+            if (this.getLatitude() == outraCoordenada.getLatitude() && this.getLongitude() == outraCoordenada.getLongitude()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(getLatitude(), getLongitude());
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Latitude: %2.14f, Longitude: %2.14f", getLatitude(), getLongitude());
+    }
 }

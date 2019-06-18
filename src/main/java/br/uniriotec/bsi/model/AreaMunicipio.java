@@ -1,8 +1,10 @@
 package br.uniriotec.bsi.model;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.*;
@@ -38,6 +40,11 @@ public class AreaMunicipio {
         this.poligonos = poligonos;
     }
 
+    /** @return Os polígonos formando a área. */
+    public List<Poligono> getPoligonos() {
+        return Collections.unmodifiableList(poligonos);
+    }
+
     /** @return A bounding box do município. */
     public BoundingBox calculateBoundingBox() {
         final List<Coordenada> somaCoordenadas = new ArrayList<>();
@@ -52,4 +59,29 @@ public class AreaMunicipio {
         return new BoundingBox(minLatitude, maxLatitude, minLongitude, maxLongitude);
     }
 
+    @Override
+    public boolean equals(@Nullable final Object object) {
+        if (this == object) {
+            return true;
+        }
+
+        if (object instanceof AreaMunicipio) {
+            AreaMunicipio outraArea = (AreaMunicipio) object;
+
+            if (this.getPoligonos().containsAll(outraArea.getPoligonos()) && outraArea.getPoligonos().containsAll(this.getPoligonos())) { // TODO verificar método mais eficiente.
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(getPoligonos());
+    }
+
+    @Override
+    public String toString() {
+        return getPoligonos().toString();
+    }
 }

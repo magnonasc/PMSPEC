@@ -2,6 +2,7 @@ package br.uniriotec.bsi.model;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import static com.google.common.base.Preconditions.*;
 
@@ -60,4 +61,29 @@ public class Municipio {
         return area;
     }
 
+    @Override
+    public boolean equals(@Nullable final Object object) {
+        if (this == object) {
+            return true;
+        }
+
+        if (object instanceof Municipio) {
+            Municipio outroMunicipio = (Municipio) object;
+
+            if (this.getGeocodigo() == outroMunicipio.getGeocodigo() && this.getSiglaUF().equals(outroMunicipio.getSiglaUF()) && this.getNome().equals(outroMunicipio.getNome()) && this.getArea().equals(outroMunicipio.getArea())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(getGeocodigo(), getSiglaUF(), getNome(), getArea());
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Código IBGE: %d, Nome: %s, UF: %s, Área: %s", getGeocodigo(), getNome(), getSiglaUF(), getArea());
+    }
 }

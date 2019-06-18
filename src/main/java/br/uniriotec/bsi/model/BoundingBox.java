@@ -52,19 +52,15 @@ public class BoundingBox {
     }
 
     @Override
-    public String toString() {
-        return String.format("minLatitude: %.14f, maxLatitude: %.14f, minLongitude: %.14f, maxLongitude: %.14f", minLatitude, maxLatitude, minLongitude, maxLongitude);
-    }
-
-    @Override
     public boolean equals(@Nullable final Object object) {
         if (this == object) {
             return true;
         }
 
         if (object instanceof BoundingBox) {
-            BoundingBox otherBoundingBox = (BoundingBox) object;
-            if (this.getMinLatitude() == otherBoundingBox.getMinLatitude() && this.getMaxLatitude() == otherBoundingBox.getMaxLatitude() && this.getMinLongitude() == otherBoundingBox.getMinLongitude() && this.getMaxLongitude() == otherBoundingBox.getMaxLongitude()) {
+            BoundingBox outroBoundingBox = (BoundingBox) object;
+
+            if (this.getMinLatitude() == outroBoundingBox.getMinLatitude() && this.getMaxLatitude() == outroBoundingBox.getMaxLatitude() && this.getMinLongitude() == outroBoundingBox.getMinLongitude() && this.getMaxLongitude() == outroBoundingBox.getMaxLongitude()) {
                 return true;
             }
         }
@@ -74,5 +70,11 @@ public class BoundingBox {
     @Override
     public int hashCode() {
         return java.util.Objects.hash(getMinLatitude(), getMaxLatitude(), getMinLongitude(), getMaxLongitude());
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Latitude Mínima: %2.14f, Latitude Máxima: %2.14f, Longitude Mínima: %2.14f, Longitude Máxima: %2.14f", getMinLatitude(), getMaxLatitude(), getMinLongitude(), getMaxLongitude());
+
     }
 }

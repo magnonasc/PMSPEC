@@ -44,4 +44,33 @@ public class Poligono {
         return Collections.unmodifiableList(coordenadas);
     }
 
+    /**
+     * {@inheritDoc}
+     * Esta implementação desconsidera a ordem das coordenadas no polígono.
+     */
+    @Override
+    public boolean equals(@Nullable final Object object) {
+        if (this == object) {
+            return true;
+        }
+
+        if (object instanceof Poligono) {
+            Poligono outraArea = (Poligono) object;
+
+            if (this.getCoordenadas().containsAll(outraArea.getCoordenadas()) && outraArea.getCoordenadas().containsAll(this.getCoordenadas())) { // TODO verificar método mais eficiente.
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(getCoordenadas());
+    }
+
+    @Override
+    public String toString() {
+        return getCoordenadas().toString();
+    }
 }
