@@ -17,8 +17,8 @@ public class Coordenada {
         COMPARADOR_POR_LONGITUDE = Comparator.comparingDouble(Coordenada::getLongitude);
     }
 
-    private final long latitude;
-    private final long longitude;
+    private final double latitude;
+    private final double longitude;
 
     /**
      * Construtor da coordenadas.
@@ -26,18 +26,18 @@ public class Coordenada {
      * @param latitude A latitude da coordenada.
      * @param longitude A longitude da coordenada.
      */
-    public Coordenada(final long latitude, final long longitude) {
+    public Coordenada(final double latitude, final double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }
 
     /** @return A latitude da coordenada. */
-    public long getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
     /** @return A longitude da coordenada. */
-    public long getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 

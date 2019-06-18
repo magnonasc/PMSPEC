@@ -1,5 +1,8 @@
 package br.uniriotec.bsi.model;
 
+import javax.annotation.Nonnegative;
+import javax.annotation.Nonnull;
+
 import static com.google.common.base.Preconditions.*;
 
 /**
@@ -22,13 +25,14 @@ public class Municipio {
      * @param nome O nome do município.
      * @param area A área do município.
      */
-    public Municipio(final long geocodigo, final String siglaUF, final String nome, final AreaMunicipio area) {
+    public Municipio(@Nonnegative final long geocodigo, @Nonnull final String siglaUF, @Nonnull final String nome, @Nonnull final AreaMunicipio area) {
         checkNotNull(siglaUF, "A sigla da UF não pode ser null.");
         checkNotNull(nome, "O nome do município não pode ser null.");
         checkNotNull(area, "A área do município não pode ser null.");
 
-        checkArgument(siglaUF.isEmpty(), "A sigla da UF não pode ser vazia.");
-        checkArgument(nome.isEmpty(), "O nome do município não pode ser vazio.");
+        checkArgument(geocodigo > 0, "O código do município não pode ser negativo.");
+        checkArgument(!siglaUF.isEmpty(), "A sigla da UF não pode ser vazia.");
+        checkArgument(!nome.isEmpty(), "O nome do município não pode ser vazio.");
 
         this.geocodigo = geocodigo;
         this.siglaUF = siglaUF;

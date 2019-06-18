@@ -1,5 +1,7 @@
 package br.uniriotec.bsi.model;
 
+import javax.annotation.Nullable;
+
 import static com.google.common.base.Preconditions.*;
 
 /**
@@ -12,7 +14,6 @@ public class BoundingBox {
     private final double minLatitude;
     private final double maxLatitude;
     private final double minLongitude;
-
     private final double maxLongitude;
 
     /**
@@ -50,4 +51,28 @@ public class BoundingBox {
         return maxLongitude;
     }
 
+    @Override
+    public String toString() {
+        return String.format("minLatitude: %.14f, maxLatitude: %.14f, minLongitude: %.14f, maxLongitude: %.14f", minLatitude, maxLatitude, minLongitude, maxLongitude);
+    }
+
+    @Override
+    public boolean equals(@Nullable final Object object) {
+        if (this == object) {
+            return true;
+        }
+
+        if (object instanceof BoundingBox) {
+            BoundingBox otherBoundingBox = (BoundingBox) object;
+            if (this.getMinLatitude() == otherBoundingBox.getMinLatitude() && this.getMaxLatitude() == otherBoundingBox.getMaxLatitude() && this.getMinLongitude() == otherBoundingBox.getMinLongitude() && this.getMaxLongitude() == otherBoundingBox.getMaxLongitude()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(getMinLatitude(), getMaxLatitude(), getMinLongitude(), getMaxLongitude());
+    }
 }
