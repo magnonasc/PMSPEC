@@ -5,6 +5,8 @@ import br.uniriotec.bsi.pmspec.api.LeitorMunicipios;
 import br.uniriotec.bsi.pmspec.model.Municipio;
 
 import javax.annotation.Nonnull;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +18,7 @@ import static com.google.common.base.Preconditions.*;
  *
  * @author Magno Nascimento
  */
+@Singleton
 public class GerenciadorMunicipiosImpl implements GerenciadorMunicipios {
 
     private static final long GEOCODIGO_INVALIDO = -1;
@@ -29,6 +32,7 @@ public class GerenciadorMunicipiosImpl implements GerenciadorMunicipios {
      *
      * @param leitorMunicipios O leitor de municípios.
      */
+    @Inject
     public GerenciadorMunicipiosImpl(@Nonnull final LeitorMunicipios leitorMunicipios) {
         this.leitorMunicipios = checkNotNull(leitorMunicipios, "O leitor de municípios não pode ser null.");
     }

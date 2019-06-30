@@ -1,6 +1,7 @@
 package br.uniriotec.bsi.pmspec.model.impl;
 
 import br.uniriotec.bsi.pmspec.PMSpec;
+import br.uniriotec.bsi.pmspec.PMSpecModule;
 import br.uniriotec.bsi.pmspec.api.LeitorMunicipios;
 import br.uniriotec.bsi.pmspec.impl.LeitorMunicipiosArquivoKML;
 import br.uniriotec.bsi.pmspec.model.*;
@@ -21,8 +22,6 @@ import static org.hamcrest.Matchers.*;
  */
 public class LeitorMunicipiosArquivoKMLTest {
 
-    private static final String NOME_RECURSO_MUNICIPIOS = "municipios.kml";
-
     private static final String NOME_RECURSO_ARQUIVO_SEM_MUNICIPIOS = "arquivoSemMunicipios.kml";
     private static final String NOME_RECURSO_MUNICIPIO_ARTIFICIAL_SIMPLES = "municipioArtificialSimples.kml";
     private static final String NOME_RECURSO_MUNICIPIO_ARTIFICIAL_COMPLEXO = "municipioArtificialComplexo.kml";
@@ -34,12 +33,11 @@ public class LeitorMunicipiosArquivoKMLTest {
     /**
      * Testa o leitor de municípios de arquivos KML com o arquivo oficial.
      *
-     * @throws URISyntaxException Se a URI retornada para o recurso KML não for válida, esse caso nunca deve acontecer.
      * @throws IOException        Se algum erro de entrada/saída ocorrer.
      */
     @Test
-    public void testeLeitorMunicipiosArquivoKML() throws URISyntaxException, IOException {
-        final LeitorMunicipios leitorMunicipios = new LeitorMunicipiosArquivoKML(Paths.get(PMSpec.class.getResource(NOME_RECURSO_MUNICIPIOS).toURI()));
+    public void testeLeitorMunicipiosArquivoKML() throws IOException {
+        final LeitorMunicipios leitorMunicipios = new LeitorMunicipiosArquivoKML(PMSpecModule.CAMINHO_PADRAO_RECURSO_MUNICIPIOS);
 
         final List<Municipio> municipios = leitorMunicipios.lerMunicipios();
 
@@ -56,7 +54,7 @@ public class LeitorMunicipiosArquivoKMLTest {
      */
     @Test
     public void testeLeitorMunicipiosArquivoKMLSemMunicipios() throws URISyntaxException, IOException {
-        final LeitorMunicipios leitorMunicipios = new LeitorMunicipiosArquivoKML(Paths.get(getClass().getResource(NOME_RECURSO_ARQUIVO_SEM_MUNICIPIOS).toURI()));
+        final LeitorMunicipios leitorMunicipios = new LeitorMunicipiosArquivoKML(getClass().getResource(NOME_RECURSO_ARQUIVO_SEM_MUNICIPIOS));
 
         final List<Municipio> municipios = leitorMunicipios.lerMunicipios();
 
@@ -71,7 +69,7 @@ public class LeitorMunicipiosArquivoKMLTest {
      */
     @Test
     public void testeLeitorMunicipiosArquivoKMLMunicipioArtificialSimples() throws URISyntaxException, IOException {
-        final LeitorMunicipios leitorMunicipios = new LeitorMunicipiosArquivoKML(Paths.get(getClass().getResource(NOME_RECURSO_MUNICIPIO_ARTIFICIAL_SIMPLES).toURI()));
+        final LeitorMunicipios leitorMunicipios = new LeitorMunicipiosArquivoKML(getClass().getResource(NOME_RECURSO_MUNICIPIO_ARTIFICIAL_SIMPLES));
 
         final List<Municipio> municipios = leitorMunicipios.lerMunicipios();
 
@@ -93,7 +91,7 @@ public class LeitorMunicipiosArquivoKMLTest {
      */
     @Test
     public void testeLeitorMunicipiosArquivoKMLMunicipioArtificialComplexo() throws URISyntaxException, IOException {
-        final LeitorMunicipios leitorMunicipios = new LeitorMunicipiosArquivoKML(Paths.get(getClass().getResource(NOME_RECURSO_MUNICIPIO_ARTIFICIAL_COMPLEXO).toURI()));
+        final LeitorMunicipios leitorMunicipios = new LeitorMunicipiosArquivoKML(getClass().getResource(NOME_RECURSO_MUNICIPIO_ARTIFICIAL_COMPLEXO));
 
         final List<Municipio> municipios = leitorMunicipios.lerMunicipios();
 
@@ -115,7 +113,7 @@ public class LeitorMunicipiosArquivoKMLTest {
      */
     @Test
     public void testeLeitorMunicipiosArquivoKMLMunicipioSimples() throws URISyntaxException, IOException {
-        final LeitorMunicipios leitorMunicipios = new LeitorMunicipiosArquivoKML(Paths.get(getClass().getResource(NOME_RECURSO_MUNICIPIO_SIMPLES).toURI()));
+        final LeitorMunicipios leitorMunicipios = new LeitorMunicipiosArquivoKML(getClass().getResource(NOME_RECURSO_MUNICIPIO_SIMPLES));
 
         final List<Municipio> municipios = leitorMunicipios.lerMunicipios();
 
@@ -137,7 +135,7 @@ public class LeitorMunicipiosArquivoKMLTest {
      */
     @Test
     public void testeLeitorMunicipiosArquivoKMLMunicipioComplexo() throws URISyntaxException, IOException {
-        final LeitorMunicipios leitorMunicipios = new LeitorMunicipiosArquivoKML(Paths.get(getClass().getResource(NOME_RECURSO_MUNICIPIO_COMPLEXO).toURI()));
+        final LeitorMunicipios leitorMunicipios = new LeitorMunicipiosArquivoKML(getClass().getResource(NOME_RECURSO_MUNICIPIO_COMPLEXO));
 
         final List<Municipio> municipios = leitorMunicipios.lerMunicipios();
 
@@ -159,7 +157,7 @@ public class LeitorMunicipiosArquivoKMLTest {
      */
     @Test
     public void testeLeitorMunicipiosArquivoKMLMunicipiosMistos() throws URISyntaxException, IOException {
-        final LeitorMunicipios leitorMunicipios = new LeitorMunicipiosArquivoKML(Paths.get(getClass().getResource(NOME_RECURSO_MUNICIPIOS_MISTOS).toURI()));
+        final LeitorMunicipios leitorMunicipios = new LeitorMunicipiosArquivoKML(getClass().getResource(NOME_RECURSO_MUNICIPIOS_MISTOS));
 
         final List<Municipio> municipios = leitorMunicipios.lerMunicipios();
 

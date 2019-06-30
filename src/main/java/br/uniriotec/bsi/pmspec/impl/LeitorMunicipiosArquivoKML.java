@@ -1,5 +1,6 @@
 package br.uniriotec.bsi.pmspec.impl;
 
+import br.uniriotec.bsi.pmspec.PMSpec;
 import br.uniriotec.bsi.pmspec.api.LeitorMunicipios;
 import br.uniriotec.bsi.pmspec.model.AreaMunicipio;
 import br.uniriotec.bsi.pmspec.model.Coordenada;
@@ -12,13 +13,18 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import javax.annotation.Nonnull;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,6 +111,7 @@ import static com.google.common.base.Preconditions.*;
  * 	</Placemark>
  * 	</code></pre>
  */
+@Singleton
 public class LeitorMunicipiosArquivoKML implements LeitorMunicipios {
 
     public static final String TAG_DELIMITADORA_PASTA = "Folder";
@@ -127,14 +134,15 @@ public class LeitorMunicipiosArquivoKML implements LeitorMunicipios {
     public static final String TAG_DELIMITADORA_COORDENADAS = "coordinates";
 
 
-    private final Path caminhoArquivoKml;
+    private final URL caminhoArquivoKml;
 
     /**
      * Construtor do leitor de municípios.
      *
      * @param caminhoArquivoKml O caminho do arquivo KML.
      */
-    public LeitorMunicipiosArquivoKML(@Nonnull final Path caminhoArquivoKml) {
+    @Inject
+    public LeitorMunicipiosArquivoKML(@Nonnull final URL caminhoArquivoKml) {
         this.caminhoArquivoKml = checkNotNull(caminhoArquivoKml);
     }
 
@@ -148,9 +156,9 @@ public class LeitorMunicipiosArquivoKML implements LeitorMunicipios {
     public List<Municipio> lerMunicipios() throws IOException {
         final Document documentoKml;
 
-        try (final InputStream inputStream = new BufferedInputStream(Files.newInputStream(caminhoArquivoKml))) {
+        try (final InputStream inputStream = new BufferedInputStream(Files.newInputStream(Paths.get(caminhoArquivoKml.toURI())))) {
             documentoKml = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputStream);
-        } catch (ParserConfigurationException | SAXException exception) {
+        } catch (ParserConfigurationException | SAXException | URISyntaxException exception) {
             throw new IOException("Um erro ocorreu na leitura do arquivo KML.", exception);
         }
 
