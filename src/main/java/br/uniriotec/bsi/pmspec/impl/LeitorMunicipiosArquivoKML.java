@@ -85,7 +85,7 @@ import static com.google.common.base.Preconditions.*;
  * 	</Placemark>
  * 	</code></pre>
  *
- * 	Ou em casos de municípios sem informações sobre nome ou UF:
+ * 	Ou em casos de municípios sem informações sobre nome ou UF (casos especiais):
  * <pre><code>
  * <Placemark> <!-- Delimitador do município. -->
  * 		<ExtendedData>

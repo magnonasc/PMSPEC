@@ -8,4 +8,5 @@ import br.uniriotec.bsi.pmspec.model.*;
  * @author Magno Nascimento
  */
 public class BoundingBoxTest {
+
 }
