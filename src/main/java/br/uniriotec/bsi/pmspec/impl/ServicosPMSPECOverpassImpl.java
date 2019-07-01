@@ -42,6 +42,15 @@ public class ServicosPMSPECOverpassImpl implements ServicosPMSPEC {
         this.gerenciadorMunicipios = checkNotNull(gerenciadorMunicipios);
     }
 
+    /**
+     * {@inheritDoc}
+     * @implNote A execução deste método é obrigatória antes da utilização do serviço.
+     */
+    @Override
+    public void inicializar() throws IOException {
+        gerenciadorMunicipios.carregarGerenciadorMunicipios();
+    }
+
     @Override
     public Stream<String> buscarPontosInteresse(final String siglaUF, final String nomeMunicipio) throws IOException {
         return buscarPontosInteresse(gerenciadorMunicipios.buscarMunicipio(siglaUF, nomeMunicipio).orElseThrow(() -> new IllegalArgumentException("O município com o nome ou UF fornecido não foi encontrado.")));
@@ -89,6 +98,7 @@ public class ServicosPMSPECOverpassImpl implements ServicosPMSPEC {
                (HttpURLConnection) OVERPASS_API_BASE_URI.toURL().openConnection();
        overpassConnection.setRequestMethod("GET");
        overpassConnection.setRequestProperty("charset", "utf-8");
+       overpassConnection.setDoOutput(true);
 
        try (final DataOutputStream writer = new DataOutputStream(overpassConnection.getOutputStream())) {
            writer.writeUTF(corpoRequisicao);
@@ -96,7 +106,9 @@ public class ServicosPMSPECOverpassImpl implements ServicosPMSPEC {
 
        final int responseCode = overpassConnection.getResponseCode();
 
-       if (responseCode == 404) {
+       if (responseCode == 400) {
+           throw new IOException("O corpo da requisição não foi reconhecido.");
+       } if (responseCode == 404) {
            throw new IOException("A página para a query requisitada não pôde ser encontrada.");
        } else if (responseCode == -1) {
            throw new IOException("Um erro ocorreu ao tentar se conectar com a API.");

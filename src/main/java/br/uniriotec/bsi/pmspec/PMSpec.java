@@ -10,6 +10,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 
 import javax.inject.Inject;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
 
@@ -30,6 +31,15 @@ public class PMSpec {
         final Injector injector = Guice.createInjector(new PMSpecModule());
 
         final ServicosPMSPEC servicosPMSPEC = injector.getInstance(ServicosPMSPEC.class);
+
+        try {
+            servicosPMSPEC.inicializar();
+            servicosPMSPEC.buscarPontosInteresse("RJ", "Belford Roxo");
+        } catch(final IOException ioException) {
+            System.err.println(ioException.getMessage());
+            // ioException.printStackTrace(System.err);
+            System.exit(1);
+        }
 
         // TODO tratar os argumentos e chamar servicosPMSPEC.buscarPontosInteresse()
     }
