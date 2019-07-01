@@ -9,10 +9,9 @@ import br.uniriotec.bsi.pmspec.model.PontoInteresse;
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.io.BufferedInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.util.List;
@@ -71,11 +70,10 @@ public class ServicosPMSPECOverpassImpl implements ServicosPMSPEC {
        final List<PontoInteresse> pontosInteresse;
 
        try(final InputStream inputStream = obterDadosMunicipio(criarCorpoRequisicao(municipio.getArea().calculateBoundingBox()))) {
-           inputStream.transferTo(System.out); // TODO tratar retorno da API
            return null;
        }
    }
-
+   
     /**
      * Cria o corpo da requisição a ser efetuada com a API Overpass.
      *
@@ -84,7 +82,15 @@ public class ServicosPMSPECOverpassImpl implements ServicosPMSPEC {
      * @see <a href="https://wiki.openstreetmap.org/wiki/Overpass_API">Overpass API</a>
      */
    private String criarCorpoRequisicao(@Nonnull final BoundingBox boundingBox) {
-       return String.format("node(%f,%f,%f,%f); out;", boundingBox.getMinLatitude(), boundingBox.getMinLongitude(), boundingBox.getMaxLatitude(), boundingBox.getMaxLongitude());
+       final StringBuilder stringBuilder = new StringBuilder();
+       stringBuilder.append("node(");
+       stringBuilder.append(boundingBox.getMinLatitude()).append(",");
+       stringBuilder.append(boundingBox.getMinLongitude()).append(",");
+       stringBuilder.append(boundingBox.getMaxLatitude()).append(",");
+       stringBuilder.append(boundingBox.getMaxLongitude()).append(");");
+       stringBuilder.append("out;");
+
+       return stringBuilder.toString();
    }
 
     /**
@@ -96,16 +102,17 @@ public class ServicosPMSPECOverpassImpl implements ServicosPMSPEC {
    private InputStream obterDadosMunicipio(@Nonnull final String corpoRequisicao) throws IOException {
        final HttpURLConnection overpassConnection =
                (HttpURLConnection) OVERPASS_API_BASE_URI.toURL().openConnection();
-       overpassConnection.setRequestMethod("GET");
+       overpassConnection.setRequestMethod("POST");
        overpassConnection.setRequestProperty("charset", "utf-8");
+       overpassConnection.setRequestProperty("Content-Type", "text/plain");
        overpassConnection.setDoOutput(true);
-
-       try (final DataOutputStream writer = new DataOutputStream(overpassConnection.getOutputStream())) {
-           writer.writeUTF(corpoRequisicao);
+       
+       try (final OutputStreamWriter writer = new OutputStreamWriter(overpassConnection.getOutputStream(), "UTF-8")) {
+           writer.write(corpoRequisicao);
        }
-
+       
        final int responseCode = overpassConnection.getResponseCode();
-
+       
        if (responseCode == 400) {
            throw new IOException("O corpo da requisição não foi reconhecido.");
        } if (responseCode == 404) {
@@ -113,7 +120,7 @@ public class ServicosPMSPECOverpassImpl implements ServicosPMSPEC {
        } else if (responseCode == -1) {
            throw new IOException("Um erro ocorreu ao tentar se conectar com a API.");
        }
-
+       
        return overpassConnection.getInputStream();
    }
 
