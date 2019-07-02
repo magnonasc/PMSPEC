@@ -40,17 +40,17 @@ public class LeitorOSM {
 
 		final Element elementoRaiz = documentoOSM.getDocumentElement();
 
-		NodeList nosCoordenadas = elementoRaiz.getChildNodes();
-		for (int i = 0; i < nosCoordenadas.getLength(); i++) {
-			final Node noCoordenada = nosCoordenadas.item(i);
+		NodeList nosCoordenadasChildNode = elementoRaiz.getChildNodes();
+		for (int i = 0; i < nosCoordenadasChildNode.getLength(); i++) {
+			final Node noCoordenadaSingleNode = nosCoordenadasChildNode.item(i);
 			Element elementCoordenada = null;
-			if (noCoordenada.getNodeType() == Node.ELEMENT_NODE) {
-				elementCoordenada = (Element) noCoordenada;
+			if (noCoordenadaSingleNode.getNodeType() == Node.ELEMENT_NODE) {
+				elementCoordenada = (Element) noCoordenadaSingleNode;
 			}
-			final NodeList nosCoordenadas2 = noCoordenada.getChildNodes();
+			final NodeList nosCoordenadasChildItems = noCoordenadaSingleNode.getChildNodes();
 
-			for (int j = 0; j < nosCoordenadas2.getLength(); j++) {
-				final Node noTag = nosCoordenadas2.item(j);
+			for (int j = 0; j < nosCoordenadasChildItems.getLength(); j++) {
+				final Node noTag = nosCoordenadasChildItems.item(j);
 				if (noTag.getNodeType() == Node.ELEMENT_NODE) {
 					Element elementTag = (Element) noTag;
 					lerTag(elementTag, elementCoordenada.getAttribute("lat"), elementCoordenada.getAttribute("lon"));
