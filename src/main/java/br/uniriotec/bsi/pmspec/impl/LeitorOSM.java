@@ -4,6 +4,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -28,7 +29,7 @@ public class LeitorOSM {
 		this.retornoAPI = checkNotNull(retornoAPI);
 	}
 
-	public List<PontoInteresse> lerOSM() throws IOException {
+	public void lerOSM() throws IOException {
 		Document documentoOSM = null;
 
 		try {
@@ -45,26 +46,24 @@ public class LeitorOSM {
 			Element elementCoordenada = null;
 			if (noCoordenada.getNodeType() == Node.ELEMENT_NODE) {
 				elementCoordenada = (Element) noCoordenada;
-				final NodeList nosCoordenadas2 = noCoordenada.getChildNodes();
+			}
+			final NodeList nosCoordenadas2 = noCoordenada.getChildNodes();
 
-				for (int j = 0; j < nosCoordenadas2.getLength(); j++) {
-					final Node noTag = nosCoordenadas2.item(j);
-					if (noTag.getNodeType() == Node.ELEMENT_NODE) {
-						Element elementTag = (Element) noTag;
-						 return lerTag(elementTag, elementCoordenada.getAttribute("lat"),
-								elementCoordenada.getAttribute("lon"));
-					}
+			for (int j = 0; j < nosCoordenadas2.getLength(); j++) {
+				final Node noTag = nosCoordenadas2.item(j);
+				if (noTag.getNodeType() == Node.ELEMENT_NODE) {
+					Element elementTag = (Element) noTag;
+					lerTag(elementTag, elementCoordenada.getAttribute("lat"), elementCoordenada.getAttribute("lon"));
 				}
 			}
 		}
-		return null;
 	}
 
 	public List<PontoInteresse> lerTag(Element elementTag, String latitudeString, String longitudeString) {
 		double latitude = Double.parseDouble(latitudeString);
 		double longitude = Double.parseDouble(longitudeString);
-		final List<PontoInteresse> pontosInteresse = null;
-
+		final List<PontoInteresse> pontosInteresse = new ArrayList<PontoInteresse>();
+		
 		if (elementTag.hasAttribute("k")) {
 			if (elementTag.getAttribute("k").contentEquals("highway")) {
 				Coordenada coordenada = new Coordenada(latitude, longitude);
@@ -72,8 +71,7 @@ public class LeitorOSM {
 				pontosInteresse.add(pontoInteresse);
 			}
 
-			if (elementTag.getAttribute("k").contentEquals("airport")) {
-				System.out.println("Possuo aeroporto");
+			if (elementTag.getAttribute("k").contentEquals("aeroway")) {
 				Coordenada coordenada = new Coordenada(latitude, longitude);
 				PontoInteresse pontoInteresse = new PontoInteresse(coordenada, Tipo.AEROPORTO, null);
 				pontosInteresse.add(pontoInteresse);
@@ -92,6 +90,10 @@ public class LeitorOSM {
 				pontosInteresse.add(pontoInteresse);
 			}
 
+		}
+		
+		for (int i = 0; i < pontosInteresse.size(); i++) {
+			System.out.println(pontosInteresse.get(i).toString());
 		}
 
 		return pontosInteresse;

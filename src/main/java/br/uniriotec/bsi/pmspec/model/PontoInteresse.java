@@ -49,6 +49,10 @@ public class PontoInteresse {
         return nome;
     }
 
+    public String toString() {
+        return String.format("Tipo de ponto: %s\n Nome do ponto: %s\n Latitude: %2.14f, Longitude: %2.14f", tipo, nome, coordenada.getLatitude(), coordenada.getLongitude());
+    }
+
     /**
      * Enumeração dos tipos de um ponto de interesse.
      *

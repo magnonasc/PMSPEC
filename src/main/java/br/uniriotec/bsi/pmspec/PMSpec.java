@@ -34,7 +34,7 @@ public class PMSpec {
 
         try {
             servicosPMSPEC.inicializar();
-            servicosPMSPEC.buscarPontosInteresse("RJ", "Belford Roxo");
+            servicosPMSPEC.buscarPontosInteresse("RJ", "Cabo Frio");
         } catch(final IOException ioException) {
             System.err.println(ioException.getMessage());
             // ioException.printStackTrace(System.err);

@@ -69,7 +69,8 @@ public class ServicosPMSPECOverpassImpl implements ServicosPMSPEC {
    private Stream<String> buscarPontosInteresse(@Nonnull final Municipio municipio) throws IOException {
        try(final InputStream inputStream = obterDadosMunicipio(criarCorpoRequisicao(municipio.getArea().calculateBoundingBox()))) {
            LeitorOSM leitorOSM = new LeitorOSM(inputStream);
-           return (Stream<String>) leitorOSM.lerOSM();
+           leitorOSM.lerOSM();
+           return null;
        }
    }
    
@@ -108,6 +109,7 @@ public class ServicosPMSPECOverpassImpl implements ServicosPMSPEC {
        
        try (final OutputStreamWriter writer = new OutputStreamWriter(overpassConnection.getOutputStream(), "UTF-8")) {
            writer.write(corpoRequisicao);
+           System.out.println(corpoRequisicao);
        }
        
        final int responseCode = overpassConnection.getResponseCode();
