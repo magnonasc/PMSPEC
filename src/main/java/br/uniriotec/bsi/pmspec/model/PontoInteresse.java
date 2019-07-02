@@ -55,7 +55,7 @@ public class PontoInteresse {
      * @author Magno Nascimento
      */
     public enum Tipo {
-        FERROVIA, PORTO, AEROPORTO, ESTRADA
+        FERROVIA, PORTO, AEROPORTO, RODOVIA
     }
 
 }

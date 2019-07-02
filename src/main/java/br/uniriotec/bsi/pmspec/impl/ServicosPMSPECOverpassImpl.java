@@ -67,10 +67,9 @@ public class ServicosPMSPECOverpassImpl implements ServicosPMSPEC {
      * @return Os pontos de interesse encontrados.
      */
    private Stream<String> buscarPontosInteresse(@Nonnull final Municipio municipio) throws IOException {
-       final List<PontoInteresse> pontosInteresse;
-
        try(final InputStream inputStream = obterDadosMunicipio(criarCorpoRequisicao(municipio.getArea().calculateBoundingBox()))) {
-           return null;
+           LeitorOSM leitorOSM = new LeitorOSM(inputStream);
+           return (Stream<String>) leitorOSM.lerOSM();
        }
    }
    
