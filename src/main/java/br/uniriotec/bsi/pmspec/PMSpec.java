@@ -31,10 +31,14 @@ public class PMSpec {
         final Injector injector = Guice.createInjector(new PMSpecModule());
 
         final ServicosPMSPEC servicosPMSPEC = injector.getInstance(ServicosPMSPEC.class);
-
+        
         try {
             servicosPMSPEC.inicializar();
-            servicosPMSPEC.buscarPontosInteresse("RJ", "Cabo Frio");
+            if(args[0].equals("--uf") && args[2].equals("--nome")) {
+            	servicosPMSPEC.buscarPontosInteresse(args[1], args[3]);
+            }
+            
+            servicosPMSPEC.buscarPontosInteresse("SC", "Itajaí");
         } catch(final IOException ioException) {
             System.err.println(ioException.getMessage());
             // ioException.printStackTrace(System.err);
@@ -43,5 +47,10 @@ public class PMSpec {
 
         // TODO tratar os argumentos e chamar servicosPMSPEC.buscarPontosInteresse()
     }
-
+  //pmspec --uf "RJ" --nome "Rio de Janeiro"
+    
+    //["--uf", "RJ", "--nome", "Rio de Janeiro"]
+    
+  //pmspec --codigo 1231241
+    //["--codigo", "1231241"]
 }

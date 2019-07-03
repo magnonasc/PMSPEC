@@ -27,7 +27,7 @@ import static com.google.common.base.Preconditions.*;
 @Singleton
 public class ServicosPMSPECOverpassImpl implements ServicosPMSPEC {
 
-    public static final URI OVERPASS_API_BASE_URI = URI.create("https://lz4.overpass-api.de/api/interpreter");
+    public static final URI OVERPASS_API_BASE_URI = URI.create("https://overpass-api.de/api/interpreter");
 
     private final GerenciadorMunicipios gerenciadorMunicipios;
 
@@ -67,8 +67,8 @@ public class ServicosPMSPECOverpassImpl implements ServicosPMSPEC {
      * @return Os pontos de interesse encontrados.
      */
    private Stream<String> buscarPontosInteresse(@Nonnull final Municipio municipio) throws IOException {
-       try(final InputStream inputStream = obterDadosMunicipio(criarCorpoRequisicao(municipio.getArea().calculateBoundingBox()))) {
-           LeitorOSM leitorOSM = new LeitorOSM(inputStream);
+       try(final InputStream inputStream = obterDadosMunicipio(criarQueryRequisicao(municipio.getArea().calculateBoundingBox()))) {
+           LeitorOSMOverpass leitorOSM = new LeitorOSMOverpass(inputStream);
            leitorOSM.lerOSM();
            return null;
        }
@@ -81,18 +81,16 @@ public class ServicosPMSPECOverpassImpl implements ServicosPMSPEC {
      * @return O corpo da requisição pronto para ser enviado.
      * @see <a href="https://wiki.openstreetmap.org/wiki/Overpass_API">Overpass API</a>
      */
-   private String criarCorpoRequisicao(@Nonnull final BoundingBox boundingBox) {
+   private String criarQueryRequisicao(@Nonnull final BoundingBox boundingBox) {
        final StringBuilder stringBuilder = new StringBuilder();
-       stringBuilder.append("node(");
-       stringBuilder.append(boundingBox.getMinLatitude()).append(",");
+       stringBuilder.append("/api/map?bbox=");
        stringBuilder.append(boundingBox.getMinLongitude()).append(",");
-       stringBuilder.append(boundingBox.getMaxLatitude()).append(",");
-       stringBuilder.append(boundingBox.getMaxLongitude()).append(");");
-       stringBuilder.append("out;");
-
+       stringBuilder.append(boundingBox.getMinLatitude()).append(",");
+       stringBuilder.append(boundingBox.getMaxLongitude()).append(",");
+       stringBuilder.append(boundingBox.getMaxLatitude());
        return stringBuilder.toString();
    }
-
+// /api/map?bbox=-42.18248958899994,-22.93313082199995,-41.88901108899994,-22.54012577499998
     /**
      * Realiza a conexão com a API Overpass e obtém os dados do município de acordo com o corpo da requisição.
      *
@@ -100,17 +98,14 @@ public class ServicosPMSPECOverpassImpl implements ServicosPMSPEC {
      * @return A resposta obtida pelo servidor.
      */
    private InputStream obterDadosMunicipio(@Nonnull final String corpoRequisicao) throws IOException {
+	   
+	   System.out.print( OVERPASS_API_BASE_URI.resolve(corpoRequisicao));
+	   
        final HttpURLConnection overpassConnection =
-               (HttpURLConnection) OVERPASS_API_BASE_URI.toURL().openConnection();
-       overpassConnection.setRequestMethod("POST");
+               (HttpURLConnection) OVERPASS_API_BASE_URI.resolve(corpoRequisicao).toURL().openConnection();
+       overpassConnection.setRequestMethod("GET");
        overpassConnection.setRequestProperty("charset", "utf-8");
        overpassConnection.setRequestProperty("Content-Type", "text/plain");
-       overpassConnection.setDoOutput(true);
-       
-       try (final OutputStreamWriter writer = new OutputStreamWriter(overpassConnection.getOutputStream(), "UTF-8")) {
-           writer.write(corpoRequisicao);
-           System.out.println(corpoRequisicao);
-       }
        
        final int responseCode = overpassConnection.getResponseCode();
        
