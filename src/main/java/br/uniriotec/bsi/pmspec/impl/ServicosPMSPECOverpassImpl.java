@@ -6,10 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
@@ -66,13 +63,13 @@ public class ServicosPMSPECOverpassImpl implements ServicosPMSPEC {
 	}
 
 	@Override
-	public Stream<String> buscarPontosInteresse(final String siglaUF, final String nomeMunicipio) throws IOException {
+	public Set<PontoInteresse> buscarPontosInteresse(final String siglaUF, final String nomeMunicipio) throws IOException {
 		return buscarPontosInteresse(gerenciadorMunicipios.buscarMunicipio(siglaUF, nomeMunicipio).orElseThrow(
 				() -> new IllegalArgumentException("O município com o nome ou UF fornecido não foi encontrado.")));
 	}
 
 	@Override
-	public Stream<String> buscarPontosInteresse(final long geocodigo) throws IOException {
+	public Set<PontoInteresse> buscarPontosInteresse(final long geocodigo) throws IOException {
 		return buscarPontosInteresse(gerenciadorMunicipios.buscarMunicipio(geocodigo).orElseThrow(
 				() -> new IllegalArgumentException("O município com o código fornecido não foi encontrado.")));
 	}
@@ -83,13 +80,13 @@ public class ServicosPMSPECOverpassImpl implements ServicosPMSPEC {
 	 * @param municipio O município onde a busca será realizada.
 	 * @return Os pontos de interesse encontrados.
 	 */
-	private Stream<String> buscarPontosInteresse(@Nonnull final Municipio municipio) throws IOException {
+	private Set<PontoInteresse> buscarPontosInteresse(@Nonnull final Municipio municipio) throws IOException {
 		try (final InputStream inputStream = obterDadosMunicipio(
 				criarQueryRequisicao(municipio.getArea().calcularBoundingBox()))) {
 			LeitorOSMOverpass leitorOSM = new LeitorOSMOverpass(inputStream);
-			leitorOSM.lerOSM();
+			Set<PontoInteresse> pontosInteresse = leitorOSM.lerOSM();
 
-			return null;
+			return pontosInteresse;
 		}
 	}
 

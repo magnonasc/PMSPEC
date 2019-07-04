@@ -2,8 +2,12 @@ package br.uniriotec.bsi.pmspec.api;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
+
+import br.uniriotec.bsi.pmspec.model.PontoInteresse;
+
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 
 /**
@@ -30,7 +34,7 @@ public interface ServicosPMSPEC {
      * @throws IOException Se algum erro de entrada/saída ocorrer.
      * @throws IllegalArgumentException Se o município com o nome fornecido não existe.
      */
-    public Stream<String> buscarPontosInteresse(@Nonnull String siglaUF, @Nonnull String nomeMunicipio) throws IOException;
+    public Set<PontoInteresse> buscarPontosInteresse(@Nonnull String siglaUF, @Nonnull String nomeMunicipio) throws IOException;
 
     /**
      * Busca pelos pontos de interesse do município especificado.
@@ -40,6 +44,6 @@ public interface ServicosPMSPEC {
      * @throws IOException Se algum erro de entrada/saída ocorrer.
      * @throws IllegalArgumentException Se o município com o código fornecido não existe.
      */
-    public Stream<String> buscarPontosInteresse(@Nonnegative long geocodigo) throws IOException;
+    public Set<PontoInteresse> buscarPontosInteresse(@Nonnegative long geocodigo) throws IOException;
 
 }
