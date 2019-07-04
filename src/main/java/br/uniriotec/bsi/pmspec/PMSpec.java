@@ -40,7 +40,6 @@ public class PMSpec {
 					Long geoCodigo = scanner.nextLong();
 					servicosPMSPEC.buscarPontosInteresse(geoCodigo);
 				} else {
-
 					String municipio = scanner.nextLine();
 					System.out.println("Digite o nome da UF");
 					String uf = scanner.nextLine();
@@ -49,9 +48,11 @@ public class PMSpec {
 				}
 			}
 
-		} catch (final IOException ioException) {
+		} catch(final IllegalArgumentException illegalArgumentException) {
+            System.err.println(illegalArgumentException.getMessage());
+            System.exit(0);
+        } catch (final IOException ioException) {
 			System.err.println(ioException.getMessage());
-			// ioException.printStackTrace(System.err);
 			System.exit(1);
 		}
 

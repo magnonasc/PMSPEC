@@ -10,6 +10,7 @@ import javax.inject.Singleton;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.*;
 
@@ -20,8 +21,6 @@ import static com.google.common.base.Preconditions.*;
  */
 @Singleton
 public class GerenciadorMunicipiosImpl implements GerenciadorMunicipios {
-
-    private static final long GEOCODIGO_INVALIDO = -1;
 
     private final LeitorMunicipios leitorMunicipios;
 
@@ -52,7 +51,7 @@ public class GerenciadorMunicipiosImpl implements GerenciadorMunicipios {
 
     @Override
     public Optional<Municipio> buscarMunicipio(final String siglaUF, final String nomeMunicipio) {
-        return municipios.stream().filter(municipio -> municipio.getSiglaUF().equals(siglaUF) && municipio.getNome().equals(nomeMunicipio)).findFirst();
+        return municipios.stream().filter(municipio -> siglaUF.equals(municipio.getSiglaUF()) && nomeMunicipio.equals(municipio.getNome())).findFirst();
     }
 
 }

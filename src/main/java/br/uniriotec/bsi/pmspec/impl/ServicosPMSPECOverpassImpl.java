@@ -128,9 +128,10 @@ public class ServicosPMSPECOverpassImpl implements ServicosPMSPEC {
 
 		if (responseCode == 400) {
 			throw new IOException("O corpo da requisição não foi reconhecido.");
-		}
-		if (responseCode == 404) {
+		} if (responseCode == 404) {
 			throw new IOException("A página para a query requisitada não pôde ser encontrada.");
+		} if (responseCode == 429) {
+			throw new IOException("A requisição feita é maior do que o suportado pela API Overpass.");
 		} else if (responseCode == -1) {
 			throw new IOException("Um erro ocorreu ao tentar se conectar com a API.");
 		}

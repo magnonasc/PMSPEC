@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -66,12 +67,13 @@ public class LeitorOSMOverpass {
 		for (int i = 0; i < elementoRaizChildNodes.getLength(); i++) {
 			final Node elementoRaizChildNodesItem = elementoRaizChildNodes.item(i);
 			if (elementoRaizChildNodesItem.getNodeName() == "way") {
-				final PontoInteresse pontoInteresse = lerTag(elementoRaizChildNodesItem);
-				
-				if(pontoInteresse != null) {
-					pontosInteresse.add(pontoInteresse);
-				}
-				
+				lerTag(elementoRaizChildNodesItem).ifPresent(pontoInteresse -> {
+
+					if(pontoInteresse.getNome() != PontoInteresse.SEM_NOME) {
+						pontosInteresse.add(pontoInteresse);
+					}
+
+				});
 			}
 		}
 		
@@ -84,7 +86,7 @@ public class LeitorOSMOverpass {
 	 * @param noWay tag que será efetuada a busca por pontos de interesse.
 	 * @return um Set com os pontos de interesse daquele município.
 	 */
-	public PontoInteresse lerTag(Node noWay) {
+	public Optional<PontoInteresse> lerTag(Node noWay) {
 		NodeList noWayChildNodes = noWay.getChildNodes();
 		for (int i = 0; i < noWayChildNodes.getLength(); i++) {
 			final Node noWayChildNodesItem = noWayChildNodes.item(i);
@@ -94,23 +96,23 @@ public class LeitorOSMOverpass {
 				if (elementTag.hasAttribute("k")) {
 					if (elementTag.getAttribute("k").equalsIgnoreCase("highway")
 							&& elementTag.getAttribute("v").equalsIgnoreCase("primary")) {
-						return new PontoInteresse(Tipo.RODOVIA, lerAtributoNome(noWayChildNodes));
+						return Optional.of(new PontoInteresse(Tipo.RODOVIA, lerAtributoNome(noWayChildNodes).orElse(PontoInteresse.SEM_NOME)));
 					} else if (elementTag.getAttribute("k").contentEquals("aeroway")
 							&& elementTag.getAttribute("v").contentEquals("aerodrome")) {
-						return new PontoInteresse(Tipo.AEROPORTO, lerAtributoNome(noWayChildNodes));
+						return Optional.of(new PontoInteresse(Tipo.AEROPORTO, lerAtributoNome(noWayChildNodes).orElse(PontoInteresse.SEM_NOME)));
 					} else if (elementTag.getAttribute("k").contentEquals("railway")
 							&& elementTag.getAttribute("v").contentEquals("rail")) {
-						return new PontoInteresse(Tipo.FERROVIA, lerAtributoNome(noWayChildNodes));
+						return Optional.of(new PontoInteresse(Tipo.FERROVIA, lerAtributoNome(noWayChildNodes).orElse(PontoInteresse.SEM_NOME)));
 					} else if (elementTag.getAttribute("k").contentEquals("landuse")
 							&& elementTag.getAttribute("v").contentEquals("harbour")) {
-						return new PontoInteresse(Tipo.PORTO, lerAtributoNome(noWayChildNodes));
+						return Optional.of(new PontoInteresse(Tipo.PORTO, lerAtributoNome(noWayChildNodes).orElse(PontoInteresse.SEM_NOME)));
 					}
 
 				}
 			}
 		}
 
-		return null;
+		return Optional.empty();
 	}
 
 	/**
@@ -120,7 +122,7 @@ public class LeitorOSMOverpass {
 	 * @return retorna o value da key name para o método de cima, que é utilizado
 	 *         para a criação de um objeto da classe PontoInteresse.
 	 */
-	public String lerAtributoNome(NodeList noWayChildNodes) {
+	public Optional<String> lerAtributoNome(NodeList noWayChildNodes) {
 		for (int i = 0; i < noWayChildNodes.getLength(); i++) {
 			final Node noWayChildNodesItem = noWayChildNodes.item(i);
 
@@ -128,11 +130,11 @@ public class LeitorOSMOverpass {
 				final Element elementNoWay = (Element) noWayChildNodesItem;
 
 				if (elementNoWay.getAttribute("k").equalsIgnoreCase("name")) {
-					return elementNoWay.getAttribute("v");
+					return Optional.of(elementNoWay.getAttribute("v"));
 				}
 			}
 		}
-		return null;
+		return Optional.empty();
 	}
 
 	public static ArrayList<String> removerDuplicados(ArrayList<String> pontosInteresse) {

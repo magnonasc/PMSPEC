@@ -2,7 +2,6 @@ package br.uniriotec.bsi.pmspec.impl;
 
 import br.uniriotec.bsi.pmspec.PMSpecModule;
 import br.uniriotec.bsi.pmspec.api.LeitorMunicipios;
-import br.uniriotec.bsi.pmspec.impl.LeitorMunicipiosArquivoKML;
 import br.uniriotec.bsi.pmspec.model.*;
 import org.junit.jupiter.api.*;
 
