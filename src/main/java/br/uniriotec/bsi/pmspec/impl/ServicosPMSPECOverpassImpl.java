@@ -111,13 +111,13 @@ public class ServicosPMSPECOverpassImpl implements ServicosPMSPEC {
 		return stringBuilder.toString();
 	}
 
-// /api/map?bbox=-42.18248958899994,-22.93313082199995,-41.88901108899994,-22.54012577499998
+
 	/**
 	 * Realiza a conexão com a API Overpass e obtém os dados do município de acordo
 	 * com o corpo da requisição.
 	 *
 	 * @param corpoRequisicao O corpo a ser enviado na requisição, geralmente gerado
-	 *                        por {@link #criarCorpoRequisicao(BoundingBox)}.
+	 *                        por {@link #criarQueryRequisicao(BoundingBox)}.
 	 * @return A resposta obtida pelo servidor.
 	 */
 	private InputStream obterDadosMunicipio(@Nonnull final String corpoRequisicao) throws IOException {
