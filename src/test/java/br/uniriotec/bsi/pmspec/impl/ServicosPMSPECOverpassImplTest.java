@@ -1,72 +1,61 @@
 package br.uniriotec.bsi.pmspec.impl;
 
-import static com.xebialabs.restito.builder.stub.StubHttp.whenHttp;
-import static com.xebialabs.restito.builder.verify.VerifyHttp.verifyHttp;
-import static com.xebialabs.restito.semantics.Action.*;
-import static com.xebialabs.restito.semantics.Condition.*;
-import static io.restassured.RestAssured.expect;
-
-import java.io.IOException;
-import java.net.URI;
-import java.util.Optional;
-
+import br.uniriotec.bsi.pmspec.PMSpecModule;
 import br.uniriotec.bsi.pmspec.api.GerenciadorMunicipios;
+import br.uniriotec.bsi.pmspec.api.LeitorMunicipios;
 import br.uniriotec.bsi.pmspec.api.ServicosPMSPEC;
 import br.uniriotec.bsi.pmspec.model.*;
-import com.google.common.net.HttpHeaders;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import com.xebialabs.restito.builder.stub.StubHttp;
 import com.xebialabs.restito.server.StubServer;
-import io.restassured.internal.http.URIBuilder;
-import org.glassfish.grizzly.http.HttpHeader;
-import org.glassfish.grizzly.http.Method;
-import org.glassfish.grizzly.http.util.HttpStatus;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-
 import org.mockito.Mockito;
 
+import javax.annotation.Nonnull;
+import java.io.IOException;
+import java.net.URI;
+import java.util.Arrays;
+import java.util.Optional;
+
+import static com.xebialabs.restito.builder.verify.VerifyHttp.verifyHttp;
+import static com.xebialabs.restito.semantics.Action.ok;
+import static com.xebialabs.restito.semantics.Condition.get;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.hasItems;
+
+/**
+ * Testes para a classe {@link ServicosPMSPECOverpassImpl}.
+ *
+ * @author Magno Nascimento, Roberta Dias e Vinícius Zamith
+ */
 public class ServicosPMSPECOverpassImplTest {
 
-	private StubServer server;
+    /**
+     * Testa o serviço sem se conectar com a API Overpass.
+     *
+     * @throws IOException Se algum erro de entrada/saída ocorrer.
+     */
+    @Test
+    public void buscarPontoInteresseTest() throws IOException {
+        final AreaMunicipio areaMunicipio = Mockito.mock(AreaMunicipio.class);
+        Mockito.when(areaMunicipio.calcularBoundingBox()).thenReturn(new BoundingBox(1, 2, 1, 2));
 
-	@BeforeEach
-	public void start() {
-		server = new StubServer().run();
-	}
+        final LeitorMunicipios leitorMunicipios = Mockito.mock(LeitorMunicipios.class);
+        Mockito.when(leitorMunicipios.lerMunicipios()).thenReturn(Arrays.asList(new Municipio(123, "RJ", "Cabo Frio", areaMunicipio)));
 
-	@AfterEach
-	public void stop() {
-		server.stop();
-	}
+        final GerenciadorMunicipios gerenciadorMunicipios = new GerenciadorMunicipiosImpl(leitorMunicipios);
 
-	@Ignore
-	@Test
-	public void buscarPontoInteresseTest() throws IOException {
-		StubHttp.whenHttp(server).
-				match(get("/api/map?bbox=1.0,0.0,3.0,1.0")).
-				then(ok());
+        final FakeServicosPMSPECOverpassImpl servicosPMSPEC = Mockito.spy(new FakeServicosPMSPECOverpassImpl(gerenciadorMunicipios));
+        servicosPMSPEC.inicializar();
 
-		final GerenciadorMunicipios gerenciadorMunicipios = Mockito.mock(GerenciadorMunicipios.class);
+        assertThat(servicosPMSPEC.buscarPontosInteresse("RJ", "Cabo Frio"), containsInAnyOrder(new PontoInteresse(PontoInteresse.Tipo.RODOVIA, "Rua Henrique Terra"), new PontoInteresse(PontoInteresse.Tipo.AEROPORTO, "Base Aeronaval de São Pedro da Aldeia")));
 
-		final AreaMunicipio areaMunicipio = Mockito.mock(AreaMunicipio.class);
-		Mockito.when(areaMunicipio.calcularBoundingBox()).thenReturn(new BoundingBox(0,1,1,3));
-
-		final Municipio municipio = Mockito.mock(Municipio.class);
-		Mockito.when(municipio.getArea()).thenReturn(areaMunicipio);
-
-		Mockito.when(gerenciadorMunicipios.buscarMunicipio(1)).thenReturn(Optional.of(new Municipio(1, "AA", "Cidade Teste", new AreaMunicipio(new Poligono(new Coordenada(0, 1), new Coordenada(1, 3), new Coordenada(0, 1))))));
-
-		final ServicosPMSPEC servicosPMSPEC = new ServicosPMSPECOverpassImpl(gerenciadorMunicipios, URI.create("http://localhost:" + server.getPort()));
-
-		try {
-			servicosPMSPEC.buscarPontosInteresse(1);
-		} catch(final IOException ioException) {
-			verifyHttp(server).once(get("/api/map?bbox=1.0,0.0,3.0,1.0"));
-		}
-	}
+        Mockito.verify(servicosPMSPEC, Mockito.times(1)).obterDadosMunicipio(new BoundingBox(1, 2, 1, 2));
+    }
 
 }

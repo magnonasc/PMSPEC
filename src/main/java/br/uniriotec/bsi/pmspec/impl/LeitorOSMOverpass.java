@@ -1,8 +1,17 @@
 package br.uniriotec.bsi.pmspec.impl;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import br.uniriotec.bsi.pmspec.api.LeitorOSM;
+import br.uniriotec.bsi.pmspec.model.PontoInteresse;
+import br.uniriotec.bsi.pmspec.model.PontoInteresse.Tipo;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
-import java.awt.List;
+import javax.annotation.Nonnull;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -10,145 +19,128 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-import javax.annotation.Nonnull;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-
-import br.uniriotec.bsi.pmspec.model.PontoInteresse;
-import br.uniriotec.bsi.pmspec.model.PontoInteresse.Tipo;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Implementação da Leitura do retorno da API Overpass e criação dos pontos de
  * interesse do município.
- * 
+ *
  * @author Vinícius Zamith, Magno Nascimento e Roberta Dias
  */
-public class LeitorOSMOverpass {
+public class LeitorOSMOverpass implements LeitorOSM {
 
-	private final InputStream inputStream;
+    private final InputStream inputStream;
 
-	/**
-	 * Construtor do leitor do OSM do Overpass.
-	 * 
-	 * @param inputStream é o retorno da API quando se busca pela determinada
-	 *                    BoudingBox
-	 */
-	public LeitorOSMOverpass(@Nonnull final InputStream inputStream) {
-		this.inputStream = checkNotNull(inputStream);
-	}
+    /**
+     * Construtor do leitor do OSM do Overpass.
+     *
+     * @param inputStream é o retorno da API quando se busca pela determinada
+     *                    BoudingBox
+     */
+    public LeitorOSMOverpass(@Nonnull final InputStream inputStream) {
+        this.inputStream = checkNotNull(inputStream);
+    }
 
-	/**
-	 * Leitor do OSM. Procura a tag way para identificar as informações dos pontos
-	 * de interesse.
-	 * 
-	 * @return O conjunto de pontos de interesse.
-     * @throws IOException Se algum erro de entrada/saída ocorrer.
-	 */
-	public Set<PontoInteresse> lerOSM() throws IOException {
-		final Set<PontoInteresse> pontosInteresse = new HashSet<PontoInteresse>();
-		
-		final Document documentoOSM;
+    @Override
+    public Set<PontoInteresse> lerOSM() throws IOException {
+        final Set<PontoInteresse> pontosInteresse = new HashSet<PontoInteresse>();
 
-		try {
-			documentoOSM = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputStream);
-		} catch (ParserConfigurationException | SAXException exception) {
-			throw new IOException("Um erro ocorreu na leitura do arquivo OSM.", exception);
-		}
+        final Document documentoOSM;
 
-		final Element elementoRaiz = documentoOSM.getDocumentElement();
+        try {
+            documentoOSM = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputStream);
+        } catch (ParserConfigurationException | SAXException exception) {
+            throw new IOException("Um erro ocorreu na leitura do arquivo OSM.", exception);
+        }
 
-		NodeList elementoRaizChildNodes = elementoRaiz.getChildNodes();
-		for (int i = 0; i < elementoRaizChildNodes.getLength(); i++) {
-			final Node elementoRaizChildNodesItem = elementoRaizChildNodes.item(i);
-			if (elementoRaizChildNodesItem.getNodeName() == "way") {
-				lerTag(elementoRaizChildNodesItem).ifPresent(pontoInteresse -> {
+        final Element elementoRaiz = documentoOSM.getDocumentElement();
 
-					if(pontoInteresse.getNome() != PontoInteresse.SEM_NOME) {
-						pontosInteresse.add(pontoInteresse);
-					}
+        NodeList elementoRaizChildNodes = elementoRaiz.getChildNodes();
+        for (int i = 0; i < elementoRaizChildNodes.getLength(); i++) {
+            final Node elementoRaizChildNodesItem = elementoRaizChildNodes.item(i);
+            if (elementoRaizChildNodesItem.getNodeName() == "way") {
+                lerTag(elementoRaizChildNodesItem).ifPresent(pontoInteresse -> {
 
-				});
-			}
-		}
-		
-		return pontosInteresse;
-	}
+                    if (pontoInteresse.getNome() != PontoInteresse.SEM_NOME) {
+                        pontosInteresse.add(pontoInteresse);
+                    }
 
-	/**
-	 * Função que lê os nós filhos da nó way para buscar por pontos de interesse.
-	 * 
-	 * @param noWay tag que será efetuada a busca por pontos de interesse.
-	 * @return um Set com os pontos de interesse daquele município.
-	 */
-	public Optional<PontoInteresse> lerTag(Node noWay) {
-		NodeList noWayChildNodes = noWay.getChildNodes();
-		for (int i = 0; i < noWayChildNodes.getLength(); i++) {
-			final Node noWayChildNodesItem = noWayChildNodes.item(i);
+                });
+            }
+        }
 
-			if (noWayChildNodesItem.getNodeType() == Node.ELEMENT_NODE) {
-				Element elementTag = (Element) noWayChildNodesItem;
-				if (elementTag.hasAttribute("k")) {
-					if (elementTag.getAttribute("k").equalsIgnoreCase("highway")
-							&& elementTag.getAttribute("v").equalsIgnoreCase("primary")) {
-						return Optional.of(new PontoInteresse(Tipo.RODOVIA, lerAtributoNome(noWayChildNodes).orElse(PontoInteresse.SEM_NOME)));
-					} else if (elementTag.getAttribute("k").contentEquals("aeroway")
-							&& elementTag.getAttribute("v").contentEquals("aerodrome")) {
-						return Optional.of(new PontoInteresse(Tipo.AEROPORTO, lerAtributoNome(noWayChildNodes).orElse(PontoInteresse.SEM_NOME)));
-					} else if (elementTag.getAttribute("k").contentEquals("railway")
-							&& elementTag.getAttribute("v").contentEquals("rail")) {
-						return Optional.of(new PontoInteresse(Tipo.FERROVIA, lerAtributoNome(noWayChildNodes).orElse(PontoInteresse.SEM_NOME)));
-					} else if (elementTag.getAttribute("k").contentEquals("landuse")
-							&& elementTag.getAttribute("v").contentEquals("harbour")) {
-						return Optional.of(new PontoInteresse(Tipo.PORTO, lerAtributoNome(noWayChildNodes).orElse(PontoInteresse.SEM_NOME)));
-					}
+        return pontosInteresse;
+    }
 
-				}
-			}
-		}
+    /**
+     * Função que lê os nós filhos da nó way para buscar por pontos de interesse.
+     *
+     * @param noWay tag que será efetuada a busca por pontos de interesse.
+     * @return um Set com os pontos de interesse daquele município.
+     */
+    public Optional<PontoInteresse> lerTag(Node noWay) {
+        NodeList noWayChildNodes = noWay.getChildNodes();
+        for (int i = 0; i < noWayChildNodes.getLength(); i++) {
+            final Node noWayChildNodesItem = noWayChildNodes.item(i);
 
-		return Optional.empty();
-	}
+            if (noWayChildNodesItem.getNodeType() == Node.ELEMENT_NODE) {
+                Element elementTag = (Element) noWayChildNodesItem;
+                if (elementTag.hasAttribute("k")) {
+                    if (elementTag.getAttribute("k").equalsIgnoreCase("highway")
+                            && elementTag.getAttribute("v").equalsIgnoreCase("primary")) {
+                        return Optional.of(new PontoInteresse(Tipo.RODOVIA, lerAtributoNome(noWayChildNodes).orElse(PontoInteresse.SEM_NOME)));
+                    } else if (elementTag.getAttribute("k").contentEquals("aeroway")
+                            && elementTag.getAttribute("v").contentEquals("aerodrome")) {
+                        return Optional.of(new PontoInteresse(Tipo.AEROPORTO, lerAtributoNome(noWayChildNodes).orElse(PontoInteresse.SEM_NOME)));
+                    } else if (elementTag.getAttribute("k").contentEquals("railway")
+                            && elementTag.getAttribute("v").contentEquals("rail")) {
+                        return Optional.of(new PontoInteresse(Tipo.FERROVIA, lerAtributoNome(noWayChildNodes).orElse(PontoInteresse.SEM_NOME)));
+                    } else if (elementTag.getAttribute("k").contentEquals("landuse")
+                            && elementTag.getAttribute("v").contentEquals("harbour")) {
+                        return Optional.of(new PontoInteresse(Tipo.PORTO, lerAtributoNome(noWayChildNodes).orElse(PontoInteresse.SEM_NOME)));
+                    }
 
-	/**
-	 * Efetua a busca e leitura das keys com value name.
-	 * 
-	 * @param noWayChildNodes nós filhos do nó way
-	 * @return retorna o value da key name para o método de cima, que é utilizado
-	 *         para a criação de um objeto da classe PontoInteresse.
-	 */
-	public Optional<String> lerAtributoNome(NodeList noWayChildNodes) {
-		for (int i = 0; i < noWayChildNodes.getLength(); i++) {
-			final Node noWayChildNodesItem = noWayChildNodes.item(i);
+                }
+            }
+        }
 
-			if (noWayChildNodesItem.getNodeType() == Node.ELEMENT_NODE) {
-				final Element elementNoWay = (Element) noWayChildNodesItem;
+        return Optional.empty();
+    }
 
-				if (elementNoWay.getAttribute("k").equalsIgnoreCase("name")) {
-					return Optional.of(elementNoWay.getAttribute("v"));
-				}
-			}
-		}
-		return Optional.empty();
-	}
+    /**
+     * Efetua a busca e leitura das keys com value name.
+     *
+     * @param noWayChildNodes nós filhos do nó way
+     * @return retorna o value da key name para o método de cima, que é utilizado
+     * para a criação de um objeto da classe PontoInteresse.
+     */
+    public Optional<String> lerAtributoNome(NodeList noWayChildNodes) {
+        for (int i = 0; i < noWayChildNodes.getLength(); i++) {
+            final Node noWayChildNodesItem = noWayChildNodes.item(i);
 
-	public static ArrayList<String> removerDuplicados(ArrayList<String> pontosInteresse) {
-		ArrayList<String> pontosInteresseSemDuplicados = new ArrayList<String>();
-		for (int i = 0; i < pontosInteresse.size(); i++) {
-			for (int j = (i + 1); j < pontosInteresse.size(); j++) {
-				if (!pontosInteresseSemDuplicados.get(i).equals(pontosInteresse.get(j))) {
-					pontosInteresseSemDuplicados.add(pontosInteresse.get(j));
-				}
-			}
-		}
-		
+            if (noWayChildNodesItem.getNodeType() == Node.ELEMENT_NODE) {
+                final Element elementNoWay = (Element) noWayChildNodesItem;
 
-		return pontosInteresseSemDuplicados;
-	}
+                if (elementNoWay.getAttribute("k").equalsIgnoreCase("name")) {
+                    return Optional.of(elementNoWay.getAttribute("v"));
+                }
+            }
+        }
+        return Optional.empty();
+    }
+
+    public static ArrayList<String> removerDuplicados(ArrayList<String> pontosInteresse) {
+        ArrayList<String> pontosInteresseSemDuplicados = new ArrayList<String>();
+        for (int i = 0; i < pontosInteresse.size(); i++) {
+            for (int j = (i + 1); j < pontosInteresse.size(); j++) {
+                if (!pontosInteresseSemDuplicados.get(i).equals(pontosInteresse.get(j))) {
+                    pontosInteresseSemDuplicados.add(pontosInteresse.get(j));
+                }
+            }
+        }
+
+
+        return pontosInteresseSemDuplicados;
+    }
 
 }

@@ -3,14 +3,15 @@ package br.uniriotec.bsi.pmspec.impl;
 import br.uniriotec.bsi.pmspec.PMSpecModule;
 import br.uniriotec.bsi.pmspec.api.LeitorMunicipios;
 import br.uniriotec.bsi.pmspec.model.*;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.*;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
 
 /**
  * Testes para a classe {@link LeitorMunicipiosArquivoKML}.
@@ -30,7 +31,7 @@ public class LeitorMunicipiosArquivoKMLTest {
     /**
      * Testa o leitor de municípios de arquivos KML com o arquivo oficial.
      *
-     * @throws IOException        Se algum erro de entrada/saída ocorrer.
+     * @throws IOException Se algum erro de entrada/saída ocorrer.
      */
     @Test
     public void testeLeitorMunicipiosArquivoKML() throws IOException {

@@ -1,16 +1,17 @@
 package br.uniriotec.bsi.pmspec;
 
-import br.uniriotec.bsi.pmspec.api.*;
-import br.uniriotec.bsi.pmspec.impl.*;
+import br.uniriotec.bsi.pmspec.api.GerenciadorMunicipios;
+import br.uniriotec.bsi.pmspec.api.LeitorMunicipios;
+import br.uniriotec.bsi.pmspec.api.ServicosPMSPEC;
+import br.uniriotec.bsi.pmspec.impl.GerenciadorMunicipiosImpl;
+import br.uniriotec.bsi.pmspec.impl.LeitorMunicipiosArquivoKML;
+import br.uniriotec.bsi.pmspec.impl.ServicosPMSPECOverpassImpl;
 import com.google.inject.AbstractModule;
 
 import javax.annotation.Nonnull;
-import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Classe de configuração de dependências do projeto.
@@ -25,6 +26,7 @@ public class PMSpecModule extends AbstractModule {
 
     /**
      * Construtor do módulo.
+     *
      * @implNote {@link #CAMINHO_PADRAO_RECURSO_MUNICIPIOS} será utilizado.
      */
     public PMSpecModule() {

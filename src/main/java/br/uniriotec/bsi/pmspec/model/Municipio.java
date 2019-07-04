@@ -4,7 +4,8 @@ import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Classe criada para representar um município do IBGE.
@@ -22,9 +23,9 @@ public class Municipio {
      * Construtor do município.
      *
      * @param geocodigo O código do IBGE correspondente ao município.
-     * @param siglaUF A sigla da UF na qual o município se encontra.
-     * @param nome O nome do município.
-     * @param area A área do município.
+     * @param siglaUF   A sigla da UF na qual o município se encontra.
+     * @param nome      O nome do município.
+     * @param area      A área do município.
      */
     public Municipio(@Nonnegative final long geocodigo, @Nullable final String siglaUF, @Nullable final String nome, @Nonnull final AreaMunicipio area) {
         checkNotNull(area, "A área do município não pode ser null.");

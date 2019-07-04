@@ -17,7 +17,7 @@ public interface LeitorMunicipios {
      *
      * @return Todos os municípios encontrados no arquivo.
      * @throws IOException Se algum erro de entrada/saída ocorrer.
-     * */
+     */
     public List<Municipio> lerMunicipios() throws IOException;
 
 }

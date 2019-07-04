@@ -17,8 +17,8 @@ public class BoundingBox {
     /**
      * Construtor da bounding box.
      *
-     * @param minLatitude O menor valor para a latitude da bounding box.
-     * @param maxLatitude O maior valor para a latitude da bounding box.
+     * @param minLatitude  O menor valor para a latitude da bounding box.
+     * @param maxLatitude  O maior valor para a latitude da bounding box.
      * @param minLongitude O menor valor para a longitude da bounding box.
      * @param maxLongitude O maior valor para a longitude da bounding box.
      */

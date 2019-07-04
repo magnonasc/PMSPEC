@@ -3,7 +3,7 @@ package br.uniriotec.bsi.pmspec.model;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Classe representando os pontos de interesse encontrados em uma determinada área.
@@ -51,7 +51,7 @@ public class PontoInteresse {
         }
 
         if (object instanceof PontoInteresse) {
-        	PontoInteresse outroPontoInteresse = (PontoInteresse) object;
+            PontoInteresse outroPontoInteresse = (PontoInteresse) object;
 
             if (this.getNome().equals(outroPontoInteresse.getNome()) && this.getTipo() == outroPontoInteresse.getTipo()) {
                 return true;
@@ -64,7 +64,7 @@ public class PontoInteresse {
     public int hashCode() {
         return java.util.Objects.hash(getNome(), getTipo());
     }
-    
+
     /**
      * Enumeração dos tipos de um ponto de interesse.
      *

@@ -32,7 +32,7 @@ public interface GerenciadorMunicipios {
     /**
      * Busca pelo município a partir de seu código do IBGE fornecido.
      *
-     * @param siglaUF A sigla da UF na qual o município se encontra.
+     * @param siglaUF       A sigla da UF na qual o município se encontra.
      * @param nomeMunicipio O nome do município.
      * @return O município, caso encontrado.
      */

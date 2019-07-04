@@ -1,11 +1,13 @@
 package br.uniriotec.bsi.pmspec.model;
 
-import javax.annotation.*;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Classe criada para representar uma área em forma de polígono com base em suas coordenadas.
@@ -18,9 +20,9 @@ public class Poligono {
 
     /**
      * Construtor do polígono.
-     * @implSpec Esse método simplesmente delega à {@link #Poligono(List)}.
      *
      * @param coordenadas As coordenadas do polígono.
+     * @implSpec Esse método simplesmente delega à {@link #Poligono(List)}.
      */
     public Poligono(@Nonnull final Coordenada... coordenadas) {
         this(Arrays.asList(coordenadas));

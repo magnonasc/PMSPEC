@@ -7,7 +7,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Classe criada para representar a área de um município com base em polígonos.
@@ -90,6 +91,7 @@ public class AreaMunicipio {
     /**
      * Estratégia de construção da classe {@link AreaMunicipio}.
      *
+     * @author Magno Nascimento
      * @apiNote Essa classe simplifica a criação de instâncias de {@link AreaMunicipio} ao transformar as chamadas:
      * <pre><code>
      *     new AreaMunicipio(new Poligono(new Coordenada(), ..., new Coordenada()), new Poligono(new Coordenada(), ..., new Coordenada()), new Poligono(new Coordenada(), ..., new Coordenada()));
@@ -105,8 +107,6 @@ public class AreaMunicipio {
      *     areaMunicipioBuilder.adicionarCoordenadas(new Coordenada(...), ..., new Coordenada(...));
      *     final AreaMunicipio areaMunicipio = areaMunicipioBuilder.build;
      * </code></pre>
-     *
-     * @author Magno Nascimento
      */
     public static class AreaMunicipioBuilder {
 

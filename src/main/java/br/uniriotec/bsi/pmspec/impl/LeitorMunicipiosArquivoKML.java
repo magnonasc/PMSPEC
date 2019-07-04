@@ -1,6 +1,5 @@
 package br.uniriotec.bsi.pmspec.impl;
 
-import br.uniriotec.bsi.pmspec.PMSpec;
 import br.uniriotec.bsi.pmspec.api.LeitorMunicipios;
 import br.uniriotec.bsi.pmspec.model.AreaMunicipio;
 import br.uniriotec.bsi.pmspec.model.Coordenada;
@@ -23,12 +22,11 @@ import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Leitor dos municípios registrados em um arquivo KML.
@@ -57,8 +55,8 @@ import static com.google.common.base.Preconditions.*;
  * 		</Polygon>
  * 	</Placemark>
  * 	</code></pre>
- *
- * 	Ou em casos de municípios com multiplos polígonos de área:
+ * <p>
+ * Ou em casos de municípios com multiplos polígonos de área:
  * <code><pre>
  * 	<Placemark> <!-- Delimitador do município. -->
  * 		<ExtendedData>
@@ -84,14 +82,14 @@ import static com.google.common.base.Preconditions.*;
  * 						<coordinates> <!-- Coordenadas delimitando os limites do polígono. -->
  * 							-43.17254038371946,-22.77597940879172,0 -43.17129244194599,-22.78304794842813,0 -43.16589949433747,-22.77709621027228,0 -43.15751297471139,-22.77855048545752,0 -43.15711813771066,-22.78677183905761,0 -43.18201203374577,-22.80409866368808,0 -43.17787525668146,-22.80661477803198,0 -43.17545469357232,-22.82014263754505,0 -43.1657342737461,-22.82080174839999,0 -43.16948880081527,-22.82624469617248,0 -43.17340182057411,-22.83116231743727,0 -43.17617961239987,-22.82426765727207,0 -43.18523181594747,-22.83359445573394,0 -43.19176729576709,-22.82050482715918,0 -43.20448245428931,-22.81990163774285,0 -43.20934569223117,-22.815267887888,0 -43.22679238988715,-22.82048990722619,0 -43.24231504986426,-22.83335284715944,0 -43.24890081444494,-22.82952725657728,0 -43.24751409969936,-22.82559058472336,0 -43.25886918993504,-22.81973700040866,0 -43.2636526326801,-22.80929698404053,0 -43.25945478973082,-22.80422803210313,0 -43.25154659734849,-22.80815292184672,0 -43.24420804381983,-22.80756723143365,0 -43.24376280409971,-22.80064203086114,0 -43.22990497737888,-22.78798059173721,0 -43.2293728800333,-22.78313690051229,0 -43.21817610547485,-22.78569148153896,0 -43.208406403401,-22.79457453273635,0 -43.19029447280293,-22.79637772259226,0 -43.18981374105158,-22.78685657954992,0 -43.18298676389134,-22.78147719651942,0 -43.1784872277252,-22.78256735572554,0 -43.17511732109366,-22.77695539674232,0 -43.17254038371946,-22.77597940879172,0
  * 						</coordinates>
- *					</LinearRing>
+ * 					</LinearRing>
  * 				</outerBoundaryIs>
  * 			</Polygon>
  * 		</MultiGeometry>
  * 	</Placemark>
  * 	</code></pre>
- *
- * 	Ou em casos de municípios sem informações sobre nome ou UF (casos especiais):
+ * <p>
+ * Ou em casos de municípios sem informações sobre nome ou UF (casos especiais):
  * <pre><code>
  * <Placemark> <!-- Delimitador do município. -->
  * 		<ExtendedData>

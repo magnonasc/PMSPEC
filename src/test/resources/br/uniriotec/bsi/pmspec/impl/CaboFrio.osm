@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="Overpass API 0.7.55.7 8b86ff77">
+    <note>The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.</note>
+    <meta osm_base="2019-07-04T15:00:02Z"/>
+    <bounds minlat="-22.9341038" minlon="-42.1826120" maxlat="-22.5405695" maxlon="-41.9700883"/>
+    <way id="239205811" version="8" timestamp="2019-06-25T02:51:01Z" changeset="71581951" uid="10108677" user="Alaircorrea">
+        <nd ref="2306576345"/>
+        <nd ref="2470173698"/>
+        <nd ref="2597060546"/>
+        <nd ref="2306576347"/>
+        <nd ref="2470173525"/>
+        <nd ref="2933452681"/>
+        <nd ref="6569013268"/>
+        <nd ref="2933452678"/>
+        <nd ref="2933452685"/>
+        <nd ref="5483466732"/>
+        <nd ref="2001110702"/>
+        <tag k="highway" v="primary"/>
+        <tag k="name" v="Rua Henrique Terra"/>
+        <tag k="oneway" v="yes"/>
+        <tag k="ref" v="RJ-102"/>
+    </way>
+    <way id="278131649" version="4" timestamp="2018-01-19T17:58:34Z" changeset="55584616" uid="5602165" user="PkBuzios">
+        <nd ref="2825552974"/>
+        <nd ref="2825552975"/>
+        <nd ref="2825552976"/>
+        <nd ref="2825552977"/>
+        <nd ref="2825552978"/>
+        <nd ref="2825552979"/>
+        <nd ref="2825552980"/>
+        <nd ref="2825552981"/>
+        <nd ref="2825552982"/>
+        <nd ref="2825552983"/>
+        <nd ref="2825552984"/>
+        <nd ref="2825552985"/>
+        <nd ref="2825552986"/>
+        <nd ref="2825552987"/>
+        <nd ref="2825552988"/>
+        <nd ref="2825552989"/>
+        <nd ref="2825552990"/>
+        <nd ref="2825552991"/>
+        <nd ref="2825552992"/>
+        <nd ref="2825552993"/>
+        <nd ref="2825552994"/>
+        <nd ref="2825552995"/>
+        <nd ref="2825552996"/>
+        <nd ref="2825552997"/>
+        <nd ref="2825552998"/>
+        <nd ref="2825552999"/>
+        <nd ref="2825553000"/>
+        <nd ref="2825553001"/>
+        <nd ref="2825553002"/>
+        <nd ref="2825553003"/>
+        <nd ref="2825553004"/>
+        <nd ref="2825553005"/>
+        <nd ref="2825553006"/>
+        <nd ref="2825553007"/>
+        <nd ref="2825553008"/>
+        <nd ref="2825553009"/>
+        <nd ref="2825553010"/>
+        <nd ref="2825553011"/>
+        <nd ref="2825553012"/>
+        <nd ref="2825553013"/>
+        <nd ref="2825553014"/>
+        <nd ref="2825553015"/>
+        <nd ref="2825553017"/>
+        <nd ref="2825553018"/>
+        <nd ref="2825553020"/>
+        <nd ref="2825553021"/>
+        <nd ref="2825553022"/>
+        <nd ref="2825553023"/>
+        <nd ref="2825553024"/>
+        <nd ref="2825553025"/>
+        <nd ref="2825553026"/>
+        <nd ref="2825553027"/>
+        <nd ref="2825553028"/>
+        <nd ref="4316682793"/>
+        <nd ref="2825553029"/>
+        <nd ref="2825553030"/>
+        <nd ref="2825553031"/>
+        <nd ref="2825553032"/>
+        <nd ref="2825553033"/>
+        <nd ref="2825553034"/>
+        <nd ref="2825553035"/>
+        <nd ref="2825553036"/>
+        <nd ref="2825553037"/>
+        <nd ref="4316682749"/>
+        <nd ref="4316682748"/>
+        <nd ref="2825553038"/>
+        <nd ref="2825553039"/>
+        <nd ref="2825553040"/>
+        <nd ref="2825553041"/>
+        <nd ref="2825553042"/>
+        <nd ref="2825553043"/>
+        <nd ref="2825553044"/>
+        <nd ref="2825553045"/>
+        <nd ref="2825553046"/>
+        <nd ref="2825553047"/>
+        <nd ref="2825553048"/>
+        <nd ref="5349542359"/>
+        <nd ref="2825553049"/>
+        <nd ref="2825553050"/>
+        <nd ref="2825553051"/>
+        <nd ref="2825553052"/>
+        <nd ref="2825553053"/>
+        <nd ref="2825553054"/>
+        <nd ref="2825553055"/>
+        <nd ref="2825553056"/>
+        <nd ref="2825553057"/>
+        <nd ref="2825553058"/>
+        <nd ref="4424086495"/>
+        <nd ref="2825553059"/>
+        <nd ref="2825552974"/>
+        <tag k="aeroway" v="aerodrome"/>
+        <tag k="landuse" v="military"/>
+        <tag k="name" v="Base Aeronaval de São Pedro da Aldeia"/>
+    </way>
+</osm>

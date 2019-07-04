@@ -13,7 +13,7 @@ public class Coordenada {
     public static final Comparator<Coordenada> COMPARADOR_POR_LATITUDE;
     public static final Comparator<Coordenada> COMPARADOR_POR_LONGITUDE;
 
-    static{
+    static {
         COMPARADOR_POR_LATITUDE = Comparator.comparingDouble(Coordenada::getLatitude);
         COMPARADOR_POR_LONGITUDE = Comparator.comparingDouble(Coordenada::getLongitude);
     }
@@ -24,7 +24,7 @@ public class Coordenada {
     /**
      * Construtor da coordenadas.
      *
-     * @param latitude A latitude da coordenada.
+     * @param latitude  A latitude da coordenada.
      * @param longitude A longitude da coordenada.
      */
     public Coordenada(final double latitude, final double longitude) {

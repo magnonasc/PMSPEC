@@ -10,9 +10,8 @@ import javax.inject.Singleton;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Implementação do gerenciador de municípios.
@@ -38,6 +37,7 @@ public class GerenciadorMunicipiosImpl implements GerenciadorMunicipios {
 
     /**
      * {@inheritDoc}
+     *
      * @implNote Este método precisa ser chamado antes que qualquer operação de leitura seja realizada.
      */
     public void carregarGerenciadorMunicipios() throws IOException {
