@@ -16,6 +16,7 @@ import static org.hamcrest.Matchers.*;
 public class LeitorOSMOverpassTest {
 
     private static final String NOME_RECURSO_PONTOS_INTERESSE_CABO_FRIO = "CaboFrio.osm";
+    private static final String NOME_RECURSO_PONTOS_INTERESSE_MUNICIPIO_VAZIO = "MunicipioVazio.osm";
 
     /**
      * Testa o leitor OSM retornado pela API Overpass.
@@ -27,6 +28,18 @@ public class LeitorOSMOverpassTest {
         final LeitorOSM leitorOSM = new LeitorOSMOverpass(getClass().getResourceAsStream(NOME_RECURSO_PONTOS_INTERESSE_CABO_FRIO));
 
         assertThat(leitorOSM.lerOSM(), containsInAnyOrder(new PontoInteresse(PontoInteresse.Tipo.RODOVIA, "Rua Henrique Terra"), new PontoInteresse(PontoInteresse.Tipo.AEROPORTO, "Base Aeronaval de São Pedro da Aldeia")));
+    }
+
+    /**
+     * Testa o leitor OSM retornado pela API Overpass.
+     *
+     * @throws IOException Se algum erro de entrada/saída ocorrer.
+     */
+    @Test
+    public void testeLeitorArquivoOSMMunicipioVazio() throws IOException {
+        final LeitorOSM leitorOSM = new LeitorOSMOverpass(getClass().getResourceAsStream(NOME_RECURSO_PONTOS_INTERESSE_MUNICIPIO_VAZIO));
+
+        assertThat(leitorOSM.lerOSM(), hasSize(0));
     }
 
 }
