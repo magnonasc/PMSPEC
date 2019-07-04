@@ -48,7 +48,7 @@ public class AreaMunicipio {
     }
 
     /** @return A bounding box do município. */
-    public BoundingBox calculateBoundingBox() {
+    public BoundingBox calcularBoundingBox() {
         final List<Coordenada> somaCoordenadas = new ArrayList<>();
 
         poligonos.forEach(poligono -> somaCoordenadas.addAll(poligono.getCoordenadas()));

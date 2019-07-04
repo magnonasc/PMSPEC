@@ -1,6 +1,5 @@
-package br.uniriotec.bsi.pmspec.model.impl;
+package br.uniriotec.bsi.pmspec.impl;
 
-import br.uniriotec.bsi.pmspec.PMSpec;
 import br.uniriotec.bsi.pmspec.PMSpecModule;
 import br.uniriotec.bsi.pmspec.api.LeitorMunicipios;
 import br.uniriotec.bsi.pmspec.impl.LeitorMunicipiosArquivoKML;
@@ -9,7 +8,6 @@ import org.junit.jupiter.api.*;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.nio.file.Paths;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.*;
@@ -124,7 +122,7 @@ public class LeitorMunicipiosArquivoKMLTest {
         assertThat(municipioTeste.getGeocodigo(), equalTo(1100015L));
         assertThat(municipioTeste.getSiglaUF(), equalTo("RO"));
         assertThat(municipioTeste.getNome(), equalTo("Alta Floresta D\'Oeste"));
-        assertThat(municipioTeste.getArea().calculateBoundingBox(), equalTo(new BoundingBox(-13.11898044537588, -11.82790901360960, -62.89308946060282, -61.88644092317787)));
+        assertThat(municipioTeste.getArea().calcularBoundingBox(), equalTo(new BoundingBox(-13.11898044537588, -11.82790901360960, -62.89308946060282, -61.88644092317787)));
     }
 
     /**
@@ -146,7 +144,7 @@ public class LeitorMunicipiosArquivoKMLTest {
         assertThat(municipioTeste.getGeocodigo(), equalTo(3304557L));
         assertThat(municipioTeste.getSiglaUF(), equalTo("RJ"));
         assertThat(municipioTeste.getNome(), equalTo("Rio de Janeiro"));
-        assertThat(municipioTeste.getArea().calculateBoundingBox(), equalTo(new BoundingBox(-23.08256212592847, -22.74808655108407, -43.79498293343551, -43.10320838961272)));
+        assertThat(municipioTeste.getArea().calcularBoundingBox(), equalTo(new BoundingBox(-23.08256212592847, -22.74808655108407, -43.79498293343551, -43.10320838961272)));
     }
 
     /**
@@ -168,14 +166,14 @@ public class LeitorMunicipiosArquivoKMLTest {
         assertThat(municipioTesteSimples.getGeocodigo(), equalTo(1100015L));
         assertThat(municipioTesteSimples.getSiglaUF(), equalTo("RO"));
         assertThat(municipioTesteSimples.getNome(), equalTo("Alta Floresta D\'Oeste"));
-        assertThat(municipioTesteSimples.getArea().calculateBoundingBox(), equalTo(new BoundingBox(-13.11898044537588, -11.82790901360960, -62.89308946060282, -61.88644092317787)));
+        assertThat(municipioTesteSimples.getArea().calcularBoundingBox(), equalTo(new BoundingBox(-13.11898044537588, -11.82790901360960, -62.89308946060282, -61.88644092317787)));
 
         final Municipio municipioTesteComplexo = municipios.get(1);
 
         assertThat(municipioTesteComplexo.getGeocodigo(), equalTo(3304557L));
         assertThat(municipioTesteComplexo.getSiglaUF(), equalTo("RJ"));
         assertThat(municipioTesteComplexo.getNome(), equalTo("Rio de Janeiro"));
-        assertThat(municipioTesteComplexo.getArea().calculateBoundingBox(), equalTo(new BoundingBox(-23.08256212592847, -22.74808655108407, -43.79498293343551, -43.10320838961272)));
+        assertThat(municipioTesteComplexo.getArea().calcularBoundingBox(), equalTo(new BoundingBox(-23.08256212592847, -22.74808655108407, -43.79498293343551, -43.10320838961272)));
     }
 
 }

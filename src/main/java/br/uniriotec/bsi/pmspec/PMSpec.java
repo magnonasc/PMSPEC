@@ -13,6 +13,7 @@ import javax.inject.Inject;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
+import java.util.Scanner;
 
 /**
  * Classe principal da interface do sistema com o usuário.
@@ -33,12 +34,20 @@ public class PMSpec {
         final ServicosPMSPEC servicosPMSPEC = injector.getInstance(ServicosPMSPEC.class);
         
         try {
+        	
             servicosPMSPEC.inicializar();
-            if(args[0].equals("--uf") && args[2].equals("--nome")) {
-            	servicosPMSPEC.buscarPontosInteresse(args[1], args[3]);
+            try(final Scanner scanner = new Scanner(System.in)) {
+            	
+            	if(scanner.hasNextLong()) {
+                	servicosPMSPEC.buscarPontosInteresse(Long.parseLong(scanner.next())).forEach(System.out::println);
+            	} else {
+            		final String uf = scanner.next();
+            		final String municipio = scanner.nextLine();
+            		
+            		servicosPMSPEC.buscarPontosInteresse(uf, municipio).forEach(System.out::println);
+            	}
             }
             
-            servicosPMSPEC.buscarPontosInteresse("SC", "Itajaí");
         } catch(final IOException ioException) {
             System.err.println(ioException.getMessage());
             // ioException.printStackTrace(System.err);
@@ -47,10 +56,4 @@ public class PMSpec {
 
         // TODO tratar os argumentos e chamar servicosPMSPEC.buscarPontosInteresse()
     }
-  //pmspec --uf "RJ" --nome "Rio de Janeiro"
-    
-    //["--uf", "RJ", "--nome", "Rio de Janeiro"]
-    
-  //pmspec --codigo 1231241
-    //["--codigo", "1231241"]
 }
