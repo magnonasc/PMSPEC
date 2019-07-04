@@ -29,7 +29,7 @@ public class Municipio {
     public Municipio(@Nonnegative final long geocodigo, @Nullable final String siglaUF, @Nullable final String nome, @Nonnull final AreaMunicipio area) {
         checkNotNull(area, "A área do município não pode ser null.");
 
-        checkArgument(geocodigo > 0, "O código do município não pode ser negativo.");
+        checkArgument(geocodigo > 0, "O código do município não pode ser 0 ou negativo.");
 
         this.geocodigo = geocodigo;
         this.siglaUF = siglaUF;
