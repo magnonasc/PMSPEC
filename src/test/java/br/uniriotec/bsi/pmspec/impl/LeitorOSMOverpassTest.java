@@ -1,14 +1,10 @@
 package br.uniriotec.bsi.pmspec.impl;
 
-import br.uniriotec.bsi.pmspec.PMSpecModule;
-import br.uniriotec.bsi.pmspec.api.LeitorMunicipios;
 import br.uniriotec.bsi.pmspec.api.LeitorOSM;
-import br.uniriotec.bsi.pmspec.model.Municipio;
 import br.uniriotec.bsi.pmspec.model.PontoInteresse;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;

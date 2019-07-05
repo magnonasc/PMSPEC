@@ -33,17 +33,24 @@ public class PMSpec {
             servicosPMSPEC.inicializar();
             try (final Scanner scanner = new Scanner(System.in)) {
 
+            	Set<PontoInteresse> pontosInteresse;
                 System.out.println("Digite nome (com letra maiúscula) ou código do município");
                 if (scanner.hasNextLong()) {
-                    Long geoCodigo = scanner.nextLong();
-                    servicosPMSPEC.buscarPontosInteresse(geoCodigo);
+                    long geoCodigo = scanner.nextLong();
+                    System.out.println("Buscando pontos de interesse do município.");
+                    pontosInteresse = servicosPMSPEC.buscarPontosInteresse(geoCodigo);
                 } else {
                     String municipio = scanner.nextLine();
                     System.out.println("Digite o nome da UF");
                     String uf = scanner.nextLine();
-                    Set<PontoInteresse> pontosInteresse = servicosPMSPEC.buscarPontosInteresse(uf.toUpperCase(), municipio);
-                    pontosInteresse.forEach(System.out::println);
+                    System.out.println("Buscando pontos de interesse do município.");
+                    pontosInteresse = servicosPMSPEC.buscarPontosInteresse(uf.toUpperCase(), municipio);
                 }
+                
+                if(pontosInteresse.isEmpty()) {
+                	System.out.println("Esse município não contém pontos de interesse relevantes.");
+                }
+                pontosInteresse.forEach(System.out::println);
             }
 
         } catch (final IllegalArgumentException illegalArgumentException) {

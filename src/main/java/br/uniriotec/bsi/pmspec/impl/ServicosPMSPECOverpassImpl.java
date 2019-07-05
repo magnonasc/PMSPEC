@@ -109,7 +109,7 @@ public class ServicosPMSPECOverpassImpl implements ServicosPMSPEC {
     /**
      * Realiza a conexão com a API Overpass e obtém os dados do município de acordo
      * com o corpo da requisição.
-     *
+     * 
      * @param boundingBox A bounding box do município.
      * @return A resposta obtida pelo servidor.
      */

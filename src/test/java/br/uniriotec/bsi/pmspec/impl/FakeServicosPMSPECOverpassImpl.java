@@ -1,21 +1,11 @@
 package br.uniriotec.bsi.pmspec.impl;
 
 import br.uniriotec.bsi.pmspec.api.GerenciadorMunicipios;
-import br.uniriotec.bsi.pmspec.api.ServicosPMSPEC;
 import br.uniriotec.bsi.pmspec.model.BoundingBox;
-import br.uniriotec.bsi.pmspec.model.Municipio;
-import br.uniriotec.bsi.pmspec.model.PontoInteresse;
 
 import javax.annotation.Nonnull;
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URI;
-import java.util.Set;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Implementação falsificada dos serviços do sistema PMSPEC utilizando a API Overpass.
